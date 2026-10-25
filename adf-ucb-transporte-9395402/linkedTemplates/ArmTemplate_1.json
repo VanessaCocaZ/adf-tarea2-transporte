@@ -596,6 +596,670 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dw_bronze_paradas_sql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_dw_transporte",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "bronze/sql"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AnioFuente",
+						"type": "varchar"
+					},
+					{
+						"name": "ParadaHistoricaId",
+						"type": "varchar"
+					},
+					{
+						"name": "CodigoPublicado",
+						"type": "varchar"
+					},
+					{
+						"name": "NombreParada",
+						"type": "varchar"
+					},
+					{
+						"name": "Zona",
+						"type": "varchar"
+					},
+					{
+						"name": "Latitud",
+						"type": "varchar"
+					},
+					{
+						"name": "Longitud",
+						"type": "varchar"
+					},
+					{
+						"name": "VigenciaDesde",
+						"type": "varchar"
+					},
+					{
+						"name": "VigenciaHasta",
+						"type": "varchar"
+					},
+					{
+						"name": "Estado",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "bronze",
+					"table": "ParadasAzure"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dw_bronze_vehiculos_sql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_dw_transporte",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "bronze/sql"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AnioFuente",
+						"type": "varchar"
+					},
+					{
+						"name": "VehiculoId",
+						"type": "varchar"
+					},
+					{
+						"name": "Placa",
+						"type": "varchar"
+					},
+					{
+						"name": "TipoVehiculo",
+						"type": "varchar"
+					},
+					{
+						"name": "CapacidadEfectiva",
+						"type": "varchar"
+					},
+					{
+						"name": "VigenciaDesde",
+						"type": "varchar"
+					},
+					{
+						"name": "VigenciaHasta",
+						"type": "varchar"
+					},
+					{
+						"name": "Estado",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "bronze",
+					"table": "VehiculosAzure"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dw_bronze_viajes_sql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_dw_transporte",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "bronze/sql"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AnioFuente",
+						"type": "varchar"
+					},
+					{
+						"name": "ViajeId",
+						"type": "varchar"
+					},
+					{
+						"name": "RutaHistoricaId",
+						"type": "varchar"
+					},
+					{
+						"name": "VehiculoId",
+						"type": "varchar"
+					},
+					{
+						"name": "FechaServicio",
+						"type": "varchar"
+					},
+					{
+						"name": "HoraProgramada",
+						"type": "varchar"
+					},
+					{
+						"name": "HoraSalida",
+						"type": "varchar"
+					},
+					{
+						"name": "HoraLlegada",
+						"type": "varchar"
+					},
+					{
+						"name": "ValidacionesTarjeta",
+						"type": "varchar"
+					},
+					{
+						"name": "KmRecorridos",
+						"type": "varchar"
+					},
+					{
+						"name": "EstadoViaje",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "bronze",
+					"table": "ViajesAzure"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dw_bronze_rutas_sql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_dw_transporte",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "bronze/sql"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AnioFuente",
+						"type": "varchar"
+					},
+					{
+						"name": "RutaHistoricaId",
+						"type": "varchar"
+					},
+					{
+						"name": "CodigoRuta",
+						"type": "varchar"
+					},
+					{
+						"name": "NombreRuta",
+						"type": "varchar"
+					},
+					{
+						"name": "Origen",
+						"type": "varchar"
+					},
+					{
+						"name": "Destino",
+						"type": "varchar"
+					},
+					{
+						"name": "VigenciaDesde",
+						"type": "varchar"
+					},
+					{
+						"name": "VigenciaHasta",
+						"type": "varchar"
+					},
+					{
+						"name": "Estado",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "bronze",
+					"table": "RutasAzure"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dw_bronze_incidentes_sql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_dw_transporte",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "bronze/sql"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AnioFuente",
+						"type": "varchar"
+					},
+					{
+						"name": "IncidenteId",
+						"type": "varchar"
+					},
+					{
+						"name": "TipoIncidente",
+						"type": "varchar"
+					},
+					{
+						"name": "Severidad",
+						"type": "varchar"
+					},
+					{
+						"name": "FechaHoraInicio",
+						"type": "varchar"
+					},
+					{
+						"name": "FechaHoraFin",
+						"type": "varchar"
+					},
+					{
+						"name": "FechaHoraRegistro",
+						"type": "varchar"
+					},
+					{
+						"name": "VehiculoId",
+						"type": "varchar"
+					},
+					{
+						"name": "Descripcion",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "bronze",
+					"table": "IncidentesAzure"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dw_bronze_demanda_paradas_sql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_dw_transporte",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "bronze/sql"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AnioFuente",
+						"type": "varchar"
+					},
+					{
+						"name": "DemandaId",
+						"type": "varchar"
+					},
+					{
+						"name": "FechaServicio",
+						"type": "varchar"
+					},
+					{
+						"name": "RutaHistoricaId",
+						"type": "varchar"
+					},
+					{
+						"name": "ParadaHistoricaId",
+						"type": "varchar"
+					},
+					{
+						"name": "Franja",
+						"type": "varchar"
+					},
+					{
+						"name": "ValidacionesTarjeta",
+						"type": "varchar"
+					},
+					{
+						"name": "Descensos",
+						"type": "varchar"
+					},
+					{
+						"name": "DemandaNoAtendida",
+						"type": "varchar"
+					},
+					{
+						"name": "Metodo",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "bronze",
+					"table": "DemandaParadasAzure"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dw_silver_paradas_sql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_dw_transporte",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "silver"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AnioFuente",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "ParadaHistoricaId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CodigoPublicado",
+						"type": "nvarchar"
+					},
+					{
+						"name": "NombreParada",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Zona",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Latitud",
+						"type": "decimal",
+						"precision": 9,
+						"scale": 6
+					},
+					{
+						"name": "Longitud",
+						"type": "decimal",
+						"precision": 9,
+						"scale": 6
+					},
+					{
+						"name": "VigenciaDesde",
+						"type": "date"
+					},
+					{
+						"name": "VigenciaHasta",
+						"type": "date"
+					},
+					{
+						"name": "Estado",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "silver",
+					"table": "ParadasAzure"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dw_silver_vehiculos_sql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_dw_transporte",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "silver"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AnioFuente",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "VehiculoId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Placa",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TipoVehiculo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CapacidadEfectiva",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "VigenciaDesde",
+						"type": "date"
+					},
+					{
+						"name": "VigenciaHasta",
+						"type": "date"
+					},
+					{
+						"name": "Estado",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "silver",
+					"table": "VehiculosAzure"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bronze_incidentes_rutas_sql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_dw_transporte",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "bronze/sql"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AnioFuente",
+						"type": "varchar"
+					},
+					{
+						"name": "IncidenteId",
+						"type": "varchar"
+					},
+					{
+						"name": "RutaHistoricaId",
+						"type": "varchar"
+					},
+					{
+						"name": "EsPrincipal",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "bronze",
+					"table": "IncidenteRutaAzure"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dw_silver_rutas_sql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_dw_transporte",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "silver"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AnioFuente",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "RutaHistoricaId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CodigoRuta",
+						"type": "nvarchar"
+					},
+					{
+						"name": "NombreRuta",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Origen",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Destino",
+						"type": "nvarchar"
+					},
+					{
+						"name": "VigenciaDesde",
+						"type": "date"
+					},
+					{
+						"name": "VigenciaHasta",
+						"type": "date"
+					},
+					{
+						"name": "Estado",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "silver",
+					"table": "RutasAzure"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dw_silver_viajes_sql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_dw_transporte",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "silver"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "AnioFuente",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "ViajeId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "RutaHistoricaId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "VehiculoId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FechaServicio",
+						"type": "date"
+					},
+					{
+						"name": "HoraProgramada",
+						"type": "time",
+						"scale": 7
+					},
+					{
+						"name": "HoraSalida",
+						"type": "time",
+						"scale": 7
+					},
+					{
+						"name": "HoraLlegada",
+						"type": "time",
+						"scale": 7
+					},
+					{
+						"name": "ValidacionesTarjeta",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "KmRecorridos",
+						"type": "decimal",
+						"precision": 8,
+						"scale": 1
+					},
+					{
+						"name": "EstadoViaje",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "silver",
+					"table": "ViajesAzure"
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }
