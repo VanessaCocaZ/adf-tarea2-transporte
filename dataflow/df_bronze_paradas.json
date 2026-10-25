@@ -63,12 +63,6 @@
 				},
 				{
 					"name": "select4"
-				},
-				{
-					"name": "select5"
-				},
-				{
-					"name": "select6"
 				}
 			],
 			"scriptLines": [
@@ -155,12 +149,8 @@
 				"union1, select2 union(byName: true)~> union2",
 				"select4 select(skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
-				"select5 select(skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select4",
-				"select6 select(skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select5",
 				"xls2 select(skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select6",
+				"     skipDuplicateMapOutputs: true) ~> select4",
 				"union2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
