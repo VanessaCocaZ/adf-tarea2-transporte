@@ -27,6 +27,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "xls"
+				},
+				{
+					"dataset": {
+						"referenceName": "bronze_paradas_2023_xls",
+						"type": "DatasetReference"
+					},
+					"name": "xls2"
 				}
 			],
 			"sinks": [
@@ -50,6 +57,18 @@
 				},
 				{
 					"name": "union2"
+				},
+				{
+					"name": "select3"
+				},
+				{
+					"name": "select4"
+				},
+				{
+					"name": "select5"
+				},
+				{
+					"name": "select6"
 				}
 			],
 			"scriptLines": [
@@ -95,6 +114,19 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> xls",
+				"source(output(",
+				"          nro_parada as string,",
+				"          nombre_parada as string,",
+				"          zona as string,",
+				"          latitud as string,",
+				"          longitud as string,",
+				"          fecha_desde as string,",
+				"          fecha_hasta as string,",
+				"          estado as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> xls2",
 				"csv select(mapColumn(",
 				"          ParadaHistoricaId = nro_parada,",
 				"          NombreParada = nombre_parada,",
@@ -121,6 +153,14 @@
 				"     skipDuplicateMapOutputs: true) ~> select2",
 				"select1, sql union(byName: true)~> union1",
 				"union1, select2 union(byName: true)~> union2",
+				"select4 select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"select5 select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select4",
+				"select6 select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select5",
+				"xls2 select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select6",
 				"union2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",

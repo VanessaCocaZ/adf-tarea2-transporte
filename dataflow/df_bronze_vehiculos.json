@@ -27,6 +27,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "xls"
+				},
+				{
+					"dataset": {
+						"referenceName": "bronze_vehiculos_2023_xls",
+						"type": "DatasetReference"
+					},
+					"name": "xls2"
 				}
 			],
 			"sinks": [
@@ -50,6 +57,9 @@
 				},
 				{
 					"name": "union2"
+				},
+				{
+					"name": "select3"
 				}
 			],
 			"scriptLines": [
@@ -91,6 +101,18 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> xls",
+				"source(output(",
+				"          nro_bus as string,",
+				"          placa as string,",
+				"          tipo_bus as string,",
+				"          capacidad as string,",
+				"          fecha_desde as string,",
+				"          fecha_hasta as string,",
+				"          estado as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> xls2",
 				"csv select(mapColumn(",
 				"          VehiculoId = nro_bus,",
 				"          Placa = placa,",
@@ -114,7 +136,18 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
 				"select1, sql union(byName: true)~> union1",
-				"union1, select2 union(byName: true)~> union2",
+				"union1, select2, select3 union(byName: true)~> union2",
+				"xls2 select(mapColumn(",
+				"          VehiculoId = nro_bus,",
+				"          Placa = placa,",
+				"          TipoVehiculo = tipo_bus,",
+				"          CapacidadEfectiva = capacidad,",
+				"          VigenciaDesde = fecha_desde,",
+				"          VigenciaHasta = fecha_hasta,",
+				"          Estado = estado",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
 				"union2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
