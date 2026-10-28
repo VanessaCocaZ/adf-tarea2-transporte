@@ -177,19 +177,7 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
-				"     mapColumn(",
-				"          AnioFuente,",
-				"          ParadaHistoricaId,",
-				"          CodigoPublicado,",
-				"          NombreParada,",
-				"          Zona = union2@Zona,",
-				"          Latitud = union2@Latitud,",
-				"          Longitud = union2@Longitud,",
-				"          VigenciaDesde,",
-				"          VigenciaHasta,",
-				"          Estado = union2@Estado",
-				"     )) ~> sink1"
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 			]
 		}
 	}
