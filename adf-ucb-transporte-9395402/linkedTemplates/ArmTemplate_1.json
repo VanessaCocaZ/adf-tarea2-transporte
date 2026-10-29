@@ -1023,7 +1023,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/dw_silver_paradas_sql')]",
+			"name": "[concat(parameters('factoryName'), '/dw_silver_demanda_paradas_sql')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1038,49 +1038,83 @@
 				"type": "AzureSqlTable",
 				"schema": [
 					{
+						"name": "DemandaId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FechaServicio",
+						"type": "date"
+					},
+					{
+						"name": "RutaHistoricaId",
+						"type": "nvarchar"
+					},
+					{
 						"name": "ParadaHistoricaId",
 						"type": "nvarchar"
 					},
 					{
-						"name": "CodigoPublicado",
+						"name": "Franja",
 						"type": "nvarchar"
 					},
 					{
-						"name": "NombreParada",
-						"type": "nvarchar"
+						"name": "ValidacionesTarjeta",
+						"type": "int",
+						"precision": 10
 					},
 					{
-						"name": "Zona",
-						"type": "nvarchar"
+						"name": "Descensos",
+						"type": "int",
+						"precision": 10
 					},
 					{
-						"name": "Latitud",
-						"type": "decimal",
-						"precision": 9,
-						"scale": 6
+						"name": "DemandaNoAtendida",
+						"type": "int",
+						"precision": 10
 					},
 					{
-						"name": "Longitud",
-						"type": "decimal",
-						"precision": 9,
-						"scale": 6
-					},
-					{
-						"name": "VigenciaDesde",
-						"type": "date"
-					},
-					{
-						"name": "VigenciaHasta",
-						"type": "date"
-					},
-					{
-						"name": "Estado",
+						"name": "Metodo",
 						"type": "nvarchar"
 					}
 				],
 				"typeProperties": {
 					"schema": "silver",
-					"table": "Paradas"
+					"table": "DemandaParadas"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dw_silver_incidentes_ruta_sql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_dw_transporte",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "silver"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "IncidenteId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "RutaHistoricaId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "EsPrincipal",
+						"type": "bit"
+					}
+				],
+				"typeProperties": {
+					"schema": "silver",
+					"table": "IncidenteRuta"
 				}
 			},
 			"dependsOn": []
@@ -1144,7 +1178,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/dw_silver_demanda_paradas_sql')]",
+			"name": "[concat(parameters('factoryName'), '/dw_silver_paradas_sql')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1158,87 +1192,33 @@
 				"annotations": [],
 				"type": "AzureSqlTable",
 				"schema": [
-					{
-						"name": "DemandaId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FechaServicio",
-						"type": "date"
-					},
-					{
-						"name": "RutaHistoricaId",
-						"type": "nvarchar"
-					},
 					{
 						"name": "ParadaHistoricaId",
 						"type": "nvarchar"
 					},
 					{
-						"name": "Franja",
+						"name": "CodigoPublicado",
 						"type": "nvarchar"
 					},
 					{
-						"name": "ValidacionesTarjeta",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Descensos",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "DemandaNoAtendida",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Metodo",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "silver",
-					"table": "DemandaParadas"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dw_silver_rutas_sql')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "sql_dw_transporte",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "silver"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "RutaHistoricaId",
+						"name": "NombreParada",
 						"type": "nvarchar"
 					},
 					{
-						"name": "CodigoRuta",
+						"name": "Zona",
 						"type": "nvarchar"
 					},
 					{
-						"name": "NombreRuta",
-						"type": "nvarchar"
+						"name": "Latitud",
+						"type": "decimal",
+						"precision": 9,
+						"scale": 6
 					},
 					{
-						"name": "Origen",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Destino",
-						"type": "nvarchar"
+						"name": "Longitud",
+						"type": "decimal",
+						"precision": 9,
+						"scale": 6
 					},
 					{
 						"name": "VigenciaDesde",
@@ -1255,7 +1235,7 @@
 				],
 				"typeProperties": {
 					"schema": "silver",
-					"table": "Rutas"
+					"table": "Paradas"
 				}
 			},
 			"dependsOn": []
