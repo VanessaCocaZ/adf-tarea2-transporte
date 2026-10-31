@@ -4995,7 +4995,7 @@
 						"derivedColumn1 derive(FechaServicio = iif(instr(FechaServicio, '/') > 0, toDate(FechaServicio, 'dd/MM/yyyy'), toDate(FechaServicio, 'yyyy-MM-dd')),",
 						"          ValidacionesTarjeta = toInteger(iifNull(ValidacionesTarjeta, '0')),",
 						"          KmRecorridos = toDecimal(iifNull(KmRecorridos, '0'), 8, 1),",
-						"          RutaHistoricaId = regexReplace(toString(byName('RutaHistoricaId')), '(-NEW|-N|-S)$', '')) ~> derivedColumn2",
+						"          RutaHistoricaId = 'RH-' + lpad(regexReplace(regexReplace(toString(byName('RutaHistoricaId')), '(-NEW|-N|-S)$', ''), '[^0-9]', ''), 2, '0')) ~> derivedColumn2",
 						"derivedColumn2 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
