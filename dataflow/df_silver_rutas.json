@@ -36,6 +36,18 @@
 				},
 				{
 					"name": "derivedColumn4"
+				},
+				{
+					"name": "derivedColumn5"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "filter2"
 				}
 			],
 			"scriptLines": [
@@ -62,8 +74,21 @@
 				"derivedColumn2 derive(Estado = iifNull(upper(trim(Estado)), 'DESCONOCIDO'),",
 				"          VigenciaDesde = iif(instr(VigenciaDesde, '/') > 0, toDate(VigenciaDesde, 'dd/MM/yyyy'), toDate(VigenciaDesde, 'yyyy-MM-dd')),",
 				"          VigenciaHasta = iif(instr(VigenciaHasta, '/') > 0, toDate(VigenciaHasta, 'dd/MM/yyyy'), toDate(VigenciaHasta, 'yyyy-MM-dd'))) ~> derivedColumn3",
-				"derivedColumn3 derive(RutaHistoricaId = iifNull(trim(RutaHistoricaId), 'RUTA_DESCONOCIDA')) ~> derivedColumn4",
-				"derivedColumn4 sink(allowSchemaDrift: true,",
+				"derivedColumn3 derive(RutaHistoricaId = iifNull(trim(RutaHistoricaId), 'RUTA_DESCONOCIDA'),",
+				"          AnioFuente = iif(isNull(AnioFuente) || trim(toString(AnioFuente)) == '' || toString(AnioFuente) == 'NULL', 2024, toInteger(trim(toString(AnioFuente))))) ~> derivedColumn4",
+				"derivedColumn4 derive(RutaHistoricaId = regexReplace(RutaHistoricaId, '(-NEW|-N|-S)$', ''),",
+				"          CodigoRuta = concat('R-', lpad(regexReplace(CodigoRuta, '[^0-9]', ''), 2, '0'))) ~> derivedColumn5",
+				"derivedColumn5 filter(RutaHistoricaId != 'RUTA DESCONOCIDA' && RutaHistoricaId != 'RUTA_DESCONOCIDA' && !isNull(RutaHistoricaId)) ~> filter1",
+				"filter2 aggregate(groupBy(RutaHistoricaId),",
+				"     CodigoRuta = first(CodigoRuta),",
+				"          NombreRuta = first(NombreRuta),",
+				"          Origen = first(Origen),",
+				"          Destino = first(Destino),",
+				"          VigenciaDesde = min(VigenciaDesde),",
+				"          VigenciaHasta = max(VigenciaHasta),",
+				"          Estado = first(Estado)) ~> aggregate1",
+				"filter1 filter(!isNull(RutaHistoricaId) && RutaHistoricaId != 'RUTA_DESCONOCIDA' && RutaHistoricaId != 'RUTA DESCONOCIDA' && regexMatch(upper(NombreRuta), '^RUTA\\\\s+[0-9]+\\\\s+(NORTE|SUR)$')) ~> filter2",
+				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          RutaHistoricaId as string,",
@@ -82,7 +107,9 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
+				"     errorHandlingOption: 'allErrors',",
+				"     transactionCommit: 'single',",
+				"     reportSuccessOnError: false,",
 				"     mapColumn(",
 				"          RutaHistoricaId,",
 				"          CodigoRuta,",

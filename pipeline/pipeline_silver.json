@@ -23,7 +23,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "df_silver_paradas",
+						"referenceName": "df_silver_vehiculos",
 						"type": "DataFlowReference"
 					},
 					"compute": {
@@ -53,7 +53,7 @@
 					"scripts": [
 						{
 							"type": "NonQuery",
-							"text": "delete from silver.Paradas\ndelete from silver.Rutas\ndelete from silver.DemandaParadas\ndelete from silver.Incidentes\ndelete from silver.Vehiculos\ndelete from silver.Viajes"
+							"text": "-- 1. Eliminar primero las tablas hijas (las que dependen de otras)\nDELETE FROM silver.DemandaParadas;\nDELETE FROM silver.Viajes;\nDELETE FROM silver.Incidentes;\n\n-- 2. Eliminar al final las tablas principales (las independientes)\nDELETE FROM silver.Paradas;\nDELETE FROM silver.Rutas;\nDELETE FROM silver.Vehiculos;"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
