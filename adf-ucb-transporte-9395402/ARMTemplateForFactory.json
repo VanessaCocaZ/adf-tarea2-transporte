@@ -369,10 +369,201 @@
 							"scripts": [
 								{
 									"type": "NonQuery",
-									"text": "delete from silver.Paradas\ndelete from silver.Rutas\ndelete from silver.DemandaParadas\ndelete from silver.Incidentes\ndelete from silver.Vehiculos\ndelete from silver.Viajes"
+									"text": "-- 1. Eliminar primero las tablas hijas (las que dependen de otras)\nDELETE FROM silver.DemandaParadas;\nDELETE FROM silver.Viajes;\nDELETE FROM silver.Incidentes;\n\n-- 2. Eliminar al final las tablas principales (las independientes)\nDELETE FROM silver.Paradas;\nDELETE FROM silver.Rutas;\nDELETE FROM silver.Vehiculos;"
 								}
 							],
 							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Data flow2",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Data flow1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_silver_rutas",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Data flow3",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Data flow2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_silver_vehiculos",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Data flow4",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Data flow1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Data flow2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_silver_incidentes",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Data flow5",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Data flow2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_silver_viajes",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Data flow6",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Data flow2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_silver_demandas",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
 						}
 					}
 				],
@@ -383,7 +574,12 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/df_silver_paradas')]",
-				"[concat(variables('factoryId'), '/linkedServices/sql_dw_transporte')]"
+				"[concat(variables('factoryId'), '/linkedServices/sql_dw_transporte')]",
+				"[concat(variables('factoryId'), '/dataflows/df_silver_rutas')]",
+				"[concat(variables('factoryId'), '/dataflows/df_silver_vehiculos')]",
+				"[concat(variables('factoryId'), '/dataflows/df_silver_incidentes')]",
+				"[concat(variables('factoryId'), '/dataflows/df_silver_viajes')]",
+				"[concat(variables('factoryId'), '/dataflows/df_silver_demandas')]"
 			]
 		},
 		{
@@ -4196,6 +4392,9 @@
 						},
 						{
 							"name": "derivedColumn3"
+						},
+						{
+							"name": "derivedColumn4"
 						}
 					],
 					"scriptLines": [
@@ -4224,7 +4423,9 @@
 						"derivedColumn2 derive(ValidacionesTarjeta = toInteger(iifNull(ValidacionesTarjeta, '0')),",
 						"          Descensos = toInteger(iifNull(Descensos, '0')),",
 						"          DemandaNoAtendida = toInteger(iifNull(DemandaNoAtendida, '0'))) ~> derivedColumn3",
-						"derivedColumn3 sink(allowSchemaDrift: true,",
+						"derivedColumn3 derive(RutaHistoricaId = regexReplace(RutaHistoricaId, '(-S|-N|-NEW)$', ''),",
+						"          ParadaHistoricaId = regexReplace(ParadaHistoricaId, '(-MC-NEW)$', '')) ~> derivedColumn4",
+						"derivedColumn4 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
 						"          DemandaId as string,",
@@ -4244,7 +4445,9 @@
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
+						"     errorHandlingOption: 'allErrors',",
+						"     transactionCommit: 'single',",
+						"     reportSuccessOnError: false,",
 						"     mapColumn(",
 						"          DemandaId,",
 						"          FechaServicio,",
@@ -4301,6 +4504,9 @@
 						},
 						{
 							"name": "derivedColumn3"
+						},
+						{
+							"name": "filter1"
 						}
 					],
 					"scriptLines": [
@@ -4321,12 +4527,16 @@
 						"     format: 'table') ~> source1",
 						"source1 derive(IncidenteId = trim(IncidenteId),",
 						"          TipoIncidente = upper(trim(TipoIncidente)),",
-						"          Severidad = upper(trim(Severidad))) ~> derivedColumn1",
+						"          Severidad = upper(trim(Severidad)),",
+						"          FechaHoraInicio = toTimestamp(substring(toString(FechaHoraInicio), 1, 19), 'yyyy-MM-dd HH:mm:ss'),",
+						"          FechaHoraFin = toTimestamp(substring(toString(FechaHoraFin), 1, 19), 'yyyy-MM-dd HH:mm:ss'),",
+						"          FechaHoraRegistro = toTimestamp(substring(toString(FechaHoraRegistro), 1, 19), 'yyyy-MM-dd HH:mm:ss')) ~> derivedColumn1",
 						"derivedColumn1 derive(Descripcion = iifNull(trim(Descripcion), 'SIN DESCRIPCION'),",
 						"          VehiculoId = trim(VehiculoId)) ~> derivedColumn2",
 						"derivedColumn2 derive(VehiculoId = iifNull(trim(VehiculoId), 'SIN_VEHICULO'),",
 						"          Descripcion = trim(replace(Descripcion, 'Evento operativo sintetico', 'Ev.'))) ~> derivedColumn3",
-						"derivedColumn3 sink(allowSchemaDrift: true,",
+						"derivedColumn3 filter(!isNull(FechaHoraInicio) && !isNull(IncidenteId)) ~> filter1",
+						"filter1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
 						"          IncidenteId as string,",
@@ -4345,7 +4555,9 @@
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
+						"     errorHandlingOption: 'allErrors',",
+						"     transactionCommit: 'single',",
+						"     reportSuccessOnError: false,",
 						"     mapColumn(",
 						"          IncidenteId,",
 						"          TipoIncidente,",
@@ -4472,7 +4684,9 @@
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
+						"     errorHandlingOption: 'allErrors',",
+						"     transactionCommit: 'single',",
+						"     reportSuccessOnError: false,",
 						"     mapColumn(",
 						"          ParadaHistoricaId,",
 						"          CodigoPublicado,",
@@ -4532,6 +4746,18 @@
 						},
 						{
 							"name": "derivedColumn4"
+						},
+						{
+							"name": "derivedColumn5"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "aggregate1"
+						},
+						{
+							"name": "filter2"
 						}
 					],
 					"scriptLines": [
@@ -4558,8 +4784,21 @@
 						"derivedColumn2 derive(Estado = iifNull(upper(trim(Estado)), 'DESCONOCIDO'),",
 						"          VigenciaDesde = iif(instr(VigenciaDesde, '/') > 0, toDate(VigenciaDesde, 'dd/MM/yyyy'), toDate(VigenciaDesde, 'yyyy-MM-dd')),",
 						"          VigenciaHasta = iif(instr(VigenciaHasta, '/') > 0, toDate(VigenciaHasta, 'dd/MM/yyyy'), toDate(VigenciaHasta, 'yyyy-MM-dd'))) ~> derivedColumn3",
-						"derivedColumn3 derive(RutaHistoricaId = iifNull(trim(RutaHistoricaId), 'RUTA_DESCONOCIDA')) ~> derivedColumn4",
-						"derivedColumn4 sink(allowSchemaDrift: true,",
+						"derivedColumn3 derive(RutaHistoricaId = iifNull(trim(RutaHistoricaId), 'RUTA_DESCONOCIDA'),",
+						"          AnioFuente = iif(isNull(AnioFuente) || trim(toString(AnioFuente)) == '' || toString(AnioFuente) == 'NULL', 2024, toInteger(trim(toString(AnioFuente))))) ~> derivedColumn4",
+						"derivedColumn4 derive(RutaHistoricaId = regexReplace(RutaHistoricaId, '(-NEW|-N|-S)$', ''),",
+						"          CodigoRuta = concat('R-', lpad(regexReplace(CodigoRuta, '[^0-9]', ''), 2, '0'))) ~> derivedColumn5",
+						"derivedColumn5 filter(RutaHistoricaId != 'RUTA DESCONOCIDA' && RutaHistoricaId != 'RUTA_DESCONOCIDA' && !isNull(RutaHistoricaId)) ~> filter1",
+						"filter2 aggregate(groupBy(RutaHistoricaId),",
+						"     CodigoRuta = first(CodigoRuta),",
+						"          NombreRuta = first(NombreRuta),",
+						"          Origen = first(Origen),",
+						"          Destino = first(Destino),",
+						"          VigenciaDesde = min(VigenciaDesde),",
+						"          VigenciaHasta = max(VigenciaHasta),",
+						"          Estado = first(Estado)) ~> aggregate1",
+						"filter1 filter(!isNull(RutaHistoricaId) && RutaHistoricaId != 'RUTA_DESCONOCIDA' && RutaHistoricaId != 'RUTA DESCONOCIDA' && regexMatch(upper(NombreRuta), '^RUTA\\\\s+[0-9]+\\\\s+(NORTE|SUR)$')) ~> filter2",
+						"aggregate1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
 						"          RutaHistoricaId as string,",
@@ -4578,7 +4817,9 @@
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
+						"     errorHandlingOption: 'allErrors',",
+						"     transactionCommit: 'single',",
+						"     reportSuccessOnError: false,",
 						"     mapColumn(",
 						"          RutaHistoricaId,",
 						"          CodigoRuta,",
@@ -4673,7 +4914,9 @@
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
+						"     errorHandlingOption: 'allErrors',",
+						"     transactionCommit: 'single',",
+						"     reportSuccessOnError: false,",
 						"     mapColumn(",
 						"          VehiculoId,",
 						"          Placa,",
@@ -4751,7 +4994,8 @@
 						"          EstadoViaje = iifNull(upper(trim(EstadoViaje)), 'DESCONOCIDO')) ~> derivedColumn1",
 						"derivedColumn1 derive(FechaServicio = iif(instr(FechaServicio, '/') > 0, toDate(FechaServicio, 'dd/MM/yyyy'), toDate(FechaServicio, 'yyyy-MM-dd')),",
 						"          ValidacionesTarjeta = toInteger(iifNull(ValidacionesTarjeta, '0')),",
-						"          KmRecorridos = toDecimal(iifNull(KmRecorridos, '0'), 8, 1)) ~> derivedColumn2",
+						"          KmRecorridos = toDecimal(iifNull(KmRecorridos, '0'), 8, 1),",
+						"          RutaHistoricaId = regexReplace(toString(byName('RutaHistoricaId')), '(-NEW|-N|-S)$', '')) ~> derivedColumn2",
 						"derivedColumn2 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
@@ -4773,7 +5017,9 @@
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
+						"     errorHandlingOption: 'allErrors',",
+						"     transactionCommit: 'single',",
+						"     reportSuccessOnError: false,",
 						"     mapColumn(",
 						"          ViajeId,",
 						"          RutaHistoricaId,",
